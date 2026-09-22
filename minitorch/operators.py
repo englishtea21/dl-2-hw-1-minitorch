@@ -63,7 +63,18 @@ def sigmoid(x: float) -> float:
 
     for stability.
     """
-    return 1.0 / (1.0 + math.exp(-x))
+
+    return 1.0 / (1.0 + math.exp(-x)) if x >= 0 else math.exp(x) / (1.0 + math.exp(x))
+
+
+def sigmoid_back(x: float, d: float) -> float:
+    r"""
+    $d \times \frac{d}{dx}\sigma(x) = d \times \sigma(x) \cdot (1 - \sigma(x))$
+
+    where $\sigma(x) = \frac{1}{1 + e^{-x}}$
+    """
+    s = sigmoid(x)
+    return d * s * (1.0 - s)
 
 
 def relu(x: float) -> float:
@@ -72,7 +83,7 @@ def relu(x: float) -> float:
 
     (See https://en.wikipedia.org/wiki/Rectifier_(neural_networks) .)
     """
-    return max(x, 0)
+    return max(x, 0.0)
 
 
 EPS = 1e-6
@@ -86,6 +97,13 @@ def log(x: float) -> float:
 def exp(x: float) -> float:
     "$f(x) = e^{x}$"
     return math.exp(x)
+
+
+def exp_back(x: float, d: float) -> float:
+    """
+    $d \times f'(x) =d \times e^{x}$
+    """
+    return d * math.exp(x)
 
 
 def log_back(x: float, d: float) -> float:
