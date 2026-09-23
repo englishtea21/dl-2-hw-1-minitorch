@@ -74,13 +74,13 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
         if curr_var.unique_id in visited or curr_var.is_constant():
             return
         visited.add(curr_var.unique_id)
-        top_sort.append(curr_var)
         for var in curr_var.parents:
             dfs_(var)
+        top_sort.append(curr_var)
 
     dfs_(variable)
 
-    return top_sort
+    return reversed(top_sort)
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
